@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D'Peñas Cevichería - Carta Virtual</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0d0614;
+            --card-bg: #1c0b30;
+            --primary: #00d2ff;
+            --accent: #ff007f;
+            --yellow: #ffb703;
+            --text-main: #ffffff;
+            --text-sub: #d0c8e8;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 90px; }
+        
+        header { 
+            background: linear-gradient(135deg, #1c0b30, #090210); 
+            padding: 20px 15px; 
+            text-align: center; 
+            border-bottom: 3px solid var(--primary); 
+            position: relative; 
+        }
+        
+        .logo-img {
+            max-width: 140px;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+        }
+
+        .subtitle { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
+        .info-bar { display: flex; justify-content: center; gap: 15px; font-size: 12px; margin-top: 10px; color: var(--yellow); flex-wrap: wrap; }
+        .info-bar span { display: flex; align-items: center; gap: 5px; }
+        
+        .nav-container { display: flex; overflow-x: auto; padding: 12px 10px; background: #07020d; gap: 8px; position: sticky; top: 0; z-index: 90; }
+        .nav-container::-webkit-scrollbar { display: none; }
+        .nav-btn { background: var(--card-bg); border: 1px solid #4a2380; color: var(--text-main); padding: 8px 14px; border-radius: 20px; font-size: 13px; white-space: nowrap; cursor: pointer; transition: 0.2s; }
+        .nav-btn.active { background: var(--primary); color: #000; font-weight: bold; border-color: var(--primary); }
+        
+        .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+        
+        .menu-card { background: var(--card-bg); border-radius: 12px; padding: 14px; margin-bottom: 12px; border: 1px solid #3c196e; display: flex; justify-content: space-between; align-items: center; }
+        .card-info { flex: 1; padding-right: 10px; }
+        .card-name { font-size: 15px; font-weight: bold; color: #fff; margin-bottom: 4px; }
+        .card-price { font-size: 16px; font-weight: 800; color: var(--primary); margin-top: 6px; }
+        
+        .add-btn { background: linear-gradient(135deg, #00d2ff, #0072ff); border: none; color: #fff; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; }
+        
+        /* Modal QR */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 200; justify-content: center; align-items: center; }
+        .modal-content { background: var(--card-bg); padding: 25px; border-radius: 16px; text-align: center; max-width: 320px; width: 90%; border: 2px solid var(--primary); }
+        #qrcode { margin: 20px auto; padding: 10px; background: #fff; border-radius: 8px; display: inline-block; }
+        
+        /* Bar del Pedido */
+        .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #07020d; border-top: 2px solid var(--primary); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
+        .cart-info { color: #fff; font-size: 14px; }
+        .cart-total { font-size: 18px; font-weight: bold; color: var(--yellow); }
+        .send-btn { background: #25d366; color: #fff; border: none; padding: 10px 18px; border-radius: 25px; font-weight: bold; display: flex; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <!-- Muestra el logo oficial -->
+    <img src="logo.jpg" alt="D'Peñas Cevichería" class="logo-img" onerror="this.style.display='none'">
+    <div class="subtitle">Maruja Cabrero A - 12, Talara</div>
+    <div class="info-bar">
+        <span><i class="fas fa-phone"></i> 954 025 848</span>
+        <span><i class="fas fa-motorcycle"></i> Delivery 24/7</span>
+        <span><i class="fas fa-credit-card"></i> Visa / Yape / Plin</span>
+    </div>
+    <button onclick="openQR()" style="margin-top:12px; background:var(--yellow); border:none; padding:6px 14px; border-radius:15px; font-weight:bold; cursor:pointer;"><i class="fas fa-qrcode"></i> Ver QR de Carta</button>
+</header>
+
+<div class="nav-container">
+    <button class="nav-btn active" onclick="filterCategory('todos')">Todos</button>
+    <button class="nav-btn" onclick="filterCategory('ceviches')">Ceviches</button>
+    <button class="nav-btn" onclick="filterCategory('sudados')">Sudados & Parihuelas</button>
+    <button class="nav-btn" onclick="filterCategory('entradas')">Entradas & Causas</button>
+    <button class="nav-btn" onclick="filterCategory('pescados')">Pescados Fritos</button>
+    <button class="nav-btn" onclick="filterCategory('rondas')">Rondas & Arroces</button>
+    <button class="nav-btn" onclick="filterCategory('noches')">Noches</button>
+    <button class="nav-btn" onclick="filterCategory('bebidas')">Bebidas & Tragos</button>
+</div>
+
+<div class="container" id="menu-items"></div>
+
+<!-- Modal Código QR -->
+<div class="modal" id="qrModal">
+    <div class="modal-content">
+        <h3>Escanea para ver la carta</h3>
+        <div id="qrcode"></div>
+        <p style="font-size:12px; color:var(--text-sub);">Muestra este código a tus clientes en el restaurante</p>
+        <button onclick="closeQR()" style="margin-top:15px; background:var(--accent); border:none; color:#fff; padding:8px 20px; border-radius:20px; cursor:pointer;">Cerrar</button>
+    </div>
+</div>
+
+<!-- Bar del Pedido -->
+<div class="cart-bar">
+    <div class="cart-info">
+        <div id="item-count">0 items seleccionados</div>
+        <div class="cart-total" id="cart-total">S/ 0.00</div>
+    </div>
+    <button class="send-btn" onclick="sendWhatsApp()"><i class="fab fa-whatsapp"></i> Pedir por WhatsApp</button>
+</div>
+
+<script>
+const menuData = [
+    { cat: 'ceviches', name: 'Ceviche de Cabrilla (Personal)', price: 35 },
+    { cat: 'ceviches', name: 'Ceviche de Cabrilla (Mediano)', price: 50 },
+    { cat: 'ceviches', name: 'Ceviche de Cabrillon (Personal)', price: 55 },
+    { cat: 'ceviches', name: 'Ceviche de Mero (Personal)', price: 55 },
+    { cat: 'ceviches', name: 'Ceviche de Conchas Negras', price: 35 },
+    { cat: 'sudados', name: 'Sudado de Cabrilla', price: 40 },
+    { cat: 'sudados', name: 'Sudado de Cabrillon', price: 55 },
+    { cat: 'sudados', name: 'Parihuela Cabrillon + Mariscos', price: 60 },
+    { cat: 'entradas', name: 'Leche de Tigre', price: 18 },
+    { cat: 'entradas', name: 'Tiradito de Aji Amarillo', price: 28 },
+    { cat: 'entradas', name: 'Causa de Langostinos', price: 32 },
+    { cat: 'pescados', name: 'Chicharron de Pescado', price: 35 },
+    { cat: 'pescados', name: 'Jalea Mixta', price: 60 },
+    { cat: 'rondas', name: 'Ronda Marina', price: 80 },
+    { cat: 'rondas', name: 'Arroz con Mariscos', price: 45 },
+    { cat: 'rondas', name: 'Chaufa de Mariscos', price: 45 },
+    { cat: 'noches', name: 'Pollo al Barril (1/4)', price: 16 },
+    { cat: 'noches', name: 'Pollo al Barril (1/2)', price: 30 },
+    { cat: 'noches', name: 'Mostrito', price: 16 },
+    { cat: 'bebidas', name: 'Jarra de Chicha Morada', price: 15 },
+    { cat: 'bebidas', name: 'Jarra de Limonada Frozen', price: 15 },
+    { cat: 'bebidas', name: 'Cerveza Cusqueña', price: 10 }
+];
+
+let cart = {};
+
+function renderMenu(items) {
+    const container = document.getElementById('menu-items');
+    container.innerHTML = items.map(item => `
+        <div class="menu-card">
+            <div class="card-info">
+                <div class="card-name">${item.name}</div>
+                <div class="card-price">S/ ${item.price.toFixed(2)}</div>
+            </div>
+            <button class="add-btn" onclick="addToCart('${item.name}', ${item.price})"><i class="fas fa-plus"></i></button>
+        </div>
+    `).join('');
+}
+
+function addToCart(name, price) {
+    if (cart[name]) { cart[name].qty += 1; }
+    else { cart[name] = { price, qty: 1 }; }
+    updateCart();
+}
+
+function updateCart() {
+    let total = 0; let count = 0;
+    for (let key in cart) {
+        total += cart[key].price * cart[key].qty;
+        count += cart[key].qty;
+    }
+    document.getElementById('cart-total').innerText = `S/ ${total.toFixed(2)}`;
+    document.getElementById('item-count').innerText = `${count} producto(s)`;
+}
+
+function filterCategory(cat) {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    if (cat === 'todos') renderMenu(menuData);
+    else renderMenu(menuData.filter(i => i.cat === cat));
+}
+
+function sendWhatsApp() {
+    let msg = "¡Hola D'Peñas Cevichería! Quisiera realizar el siguiente pedido:\n\n";
+    let total = 0;
+    for (let key in cart) {
+        let sub = cart[key].price * cart[key].qty;
+        total += sub;
+        msg += `• ${cart[key].qty}x ${key} - S/ ${sub.toFixed(2)}\n`;
+    }
+    if (total === 0) { alert('Por favor, selecciona al menos un plato.'); return; }
+    msg += `\n*Total a pagar: S/ ${total.toFixed(2)}*`;
+    window.open(`https://wa.me/51954025848?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function openQR() {
+    document.getElementById('qrModal').style.display = 'flex';
+    document.getElementById('qrcode').innerHTML = '';
+    new QRCode(document.getElementById("qrcode"), { text: window.location.href, width: 150, height: 150 });
+}
+function closeQR() { document.getElementById('qrModal').style.display = 'none'; }
+
+renderMenu(menuData);
+</script>
+</body>
+</html>
