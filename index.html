@@ -28,9 +28,9 @@
         }
         
         .logo-img {
-            max-width: 140px;
+            max-width: 130px;
             height: auto;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             border-radius: 50%;
             box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
         }
@@ -68,7 +68,6 @@
 <body>
 
 <header>
-    <!-- Muestra el logo oficial -->
     <img src="logo.jpg" alt="D'Peñas Cevichería" class="logo-img" onerror="this.style.display='none'">
     <div class="subtitle">Maruja Cabrero A - 12, Talara</div>
     <div class="info-bar">
@@ -85,9 +84,14 @@
     <button class="nav-btn" onclick="filterCategory('sudados')">Sudados & Parihuelas</button>
     <button class="nav-btn" onclick="filterCategory('entradas')">Entradas & Causas</button>
     <button class="nav-btn" onclick="filterCategory('pescados')">Pescados Fritos</button>
+    <button class="nav-btn" onclick="filterCategory('mariscos')">Especialidades Marinas</button>
     <button class="nav-btn" onclick="filterCategory('rondas')">Rondas & Arroces</button>
-    <button class="nav-btn" onclick="filterCategory('noches')">Noches</button>
-    <button class="nav-btn" onclick="filterCategory('bebidas')">Bebidas & Tragos</button>
+    <button class="nav-btn" onclick="filterCategory('criollos')">Platos Criollos</button>
+    <button class="nav-btn" onclick="filterCategory('piqueos')">Piqueos Regionales</button>
+    <button class="nav-btn" onclick="filterCategory('domingos')">Especiales Domingo</button>
+    <button class="nav-btn" onclick="filterCategory('noches')">Especiales Noche</button>
+    <button class="nav-btn" onclick="filterCategory('guarniciones')">Guarniciones</button>
+    <button class="nav-btn" onclick="filterCategory('bebidas')">Bebidas & Cervezas</button>
 </div>
 
 <div class="container" id="menu-items"></div>
@@ -113,28 +117,144 @@
 
 <script>
 const menuData = [
+    // CEVICHES
+    { cat: 'ceviches', name: 'Ceviche de Aguja (Personal)', price: 35 },
+    { cat: 'ceviches', name: 'Ceviche de Aguja (Mediano)', price: 50 },
+    { cat: 'ceviches', name: 'Ceviche de Aguja (Grande)', price: 65 },
     { cat: 'ceviches', name: 'Ceviche de Cabrilla (Personal)', price: 35 },
     { cat: 'ceviches', name: 'Ceviche de Cabrilla (Mediano)', price: 50 },
-    { cat: 'ceviches', name: 'Ceviche de Cabrillon (Personal)', price: 55 },
+    { cat: 'ceviches', name: 'Ceviche de Cabrilla (Grande)', price: 65 },
+    { cat: 'ceviches', name: 'Ceviche de Cabrillón (Personal)', price: 55 },
+    { cat: 'ceviches', name: 'Ceviche de Cabrillón (Mediano)', price: 70 },
+    { cat: 'ceviches', name: 'Ceviche de Cabrillón (Grande)', price: 85 },
     { cat: 'ceviches', name: 'Ceviche de Mero (Personal)', price: 55 },
+    { cat: 'ceviches', name: 'Ceviche de Mero (Mediano)', price: 70 },
+    { cat: 'ceviches', name: 'Ceviche de Mero (Grande)', price: 85 },
+    { cat: 'ceviches', name: 'Ceviche de Caballa', price: 25 },
     { cat: 'ceviches', name: 'Ceviche de Conchas Negras', price: 35 },
-    { cat: 'sudados', name: 'Sudado de Cabrilla', price: 40 },
-    { cat: 'sudados', name: 'Sudado de Cabrillon', price: 55 },
-    { cat: 'sudados', name: 'Parihuela Cabrillon + Mariscos', price: 60 },
-    { cat: 'entradas', name: 'Leche de Tigre', price: 18 },
-    { cat: 'entradas', name: 'Tiradito de Aji Amarillo', price: 28 },
+    { cat: 'ceviches', name: 'Ceviche de Conchas Blancas', price: 25 },
+    { cat: 'ceviches', name: 'Ceviche Mixto (Pescado + Conchas Negras)', price: 55 },
+    { cat: 'ceviches', name: 'Ceviche Mixto (Pescado + Mariscos)', price: 55 },
+
+    // SUDADOS Y PARIHUELAS
+    { cat: 'sudados', name: 'Sudado de Cabrilla (Opción 1)', price: 40 },
+    { cat: 'sudados', name: 'Sudado de Cabrilla (Opción 2)', price: 60 },
+    { cat: 'sudados', name: 'Sudado de Cabrilla (Opción 3)', price: 80 },
+    { cat: 'sudados', name: 'Sudado de Cabrillón (Opción 1)', price: 55 },
+    { cat: 'sudados', name: 'Sudado de Cabrillón (Opción 2)', price: 85 },
+    { cat: 'sudados', name: 'Sudado de Mero (Opción 1)', price: 55 },
+    { cat: 'sudados', name: 'Sudado de Mero (Opción 2)', price: 85 },
+    { cat: 'sudados', name: 'Parihuela Cabrillón + Mariscos (Opción 1)', price: 60 },
+    { cat: 'sudados', name: 'Parihuela Cabrillón + Mariscos (Opción 2)', price: 80 },
+    { cat: 'sudados', name: 'Parihuela Cabrilla + Mariscos y Langosta (Opción 1)', price: 80 },
+    { cat: 'sudados', name: 'Parihuela Cabrilla + Mariscos y Langosta (Opción 2)', price: 100 },
+    { cat: 'sudados', name: 'Parihuela Mero + Mariscos + Langosta', price: 140 },
+
+    // ENTRADAS Y CAUSAS
+    { cat: 'entradas', name: 'Tiradito de Ají Amarillo', price: 28 },
+    { cat: 'entradas', name: 'Tiradito de Rocoto', price: 28 },
+    { cat: 'entradas', name: 'Pulpo al Olivo', price: 35 },
+    { cat: 'entradas', name: 'Causa de Pollo', price: 25 },
+    { cat: 'entradas', name: 'Causa de Pulpo al Olivo', price: 32 },
     { cat: 'entradas', name: 'Causa de Langostinos', price: 32 },
-    { cat: 'pescados', name: 'Chicharron de Pescado', price: 35 },
+    { cat: 'entradas', name: 'Leche de Tigre', price: 18 },
+    { cat: 'entradas', name: 'Leche de Pantera', price: 25 },
+
+    // PESCADOS FRITOS
+    { cat: 'pescados', name: 'Pescado Frito Cabrilla (Personal)', price: 40 },
+    { cat: 'pescados', name: 'Pescado Frito Cabrilla (Grande)', price: 60 },
+    { cat: 'pescados', name: 'Pescado Frito Cabrillón (Personal)', price: 60 },
+    { cat: 'pescados', name: 'Pescado Frito Cabrillón (Grande)', price: 85 },
+    { cat: 'pescados', name: 'Pescado Frito Mero (Personal)', price: 60 },
+    { cat: 'pescados', name: 'Pescado Frito Mero (Grande)', price: 85 },
     { cat: 'pescados', name: 'Jalea Mixta', price: 60 },
+    { cat: 'pescados', name: 'Chicharrón de Pescado (Personal)', price: 35 },
+    { cat: 'pescados', name: 'Chicharrón de Pescado (Grande)', price: 60 },
+    { cat: 'pescados', name: 'Chicharrón Mixto (Pescado + Mariscos)', price: 55 },
+    { cat: 'pescados', name: 'Cabrilla en Escama de Ajo', price: 50 },
+
+    // ESPECIALIDADES MARINAS
+    { cat: 'mariscos', name: 'Cachema Encebollada', price: 35 },
+    { cat: 'mariscos', name: 'Pescado al Vapor Cabrilla', price: 50 },
+    { cat: 'mariscos', name: 'Pasado por Agua Caliente Cabrilla', price: 50 },
+    { cat: 'mariscos', name: 'Pasado por Agua Caliente Caballa', price: 25 },
+    { cat: 'mariscos', name: 'Parrilla Marina (Pescado + Mariscos + Langosta)', price: 120 },
+    { cat: 'mariscos', name: 'Langosta en Mantequilla de Ajo', price: 80 },
+    { cat: 'mariscos', name: 'Langosta en Salsa de Mariscos', price: 100 },
+    { cat: 'mariscos', name: 'Langosta a la Parrilla', price: 80 },
+    { cat: 'mariscos', name: 'Pulpo a la Parrilla', price: 45 },
+
+    // RONDAS Y ARROCES
+    { cat: 'rondas', name: 'Ronda Criolla', price: 80 },
     { cat: 'rondas', name: 'Ronda Marina', price: 80 },
+    { cat: 'rondas', name: 'Langostinos Jumbo al Ajillo', price: 55 },
     { cat: 'rondas', name: 'Arroz con Mariscos', price: 45 },
     { cat: 'rondas', name: 'Chaufa de Mariscos', price: 45 },
+    { cat: 'rondas', name: 'Arroz con Conchas Negras', price: 45 },
+    { cat: 'rondas', name: 'Tacu Tacu en Salsa de Mariscos', price: 45 },
+    { cat: 'rondas', name: 'Tacu Tacu con Lomo Saltado', price: 38 },
+    { cat: 'rondas', name: 'Filete de Pescado en Salsa de Champiñones', price: 35 },
+    { cat: 'rondas', name: 'Filete de Pescado en Salsa de Mariscos', price: 40 },
+    { cat: 'rondas', name: 'Filete de Mero en Salsa de Mariscos', price: 65 },
+    { cat: 'rondas', name: 'Canastas en Salsa de Mariscos', price: 40 },
+    { cat: 'rondas', name: 'Espaguetis en Salsa de Mariscos', price: 35 },
+
+    // PLATOS CRIOLLOS Y A LA CARTA
+    { cat: 'criollos', name: 'Lomo Saltado (Arroz y Papas Fritas)', price: 35 },
+    { cat: 'criollos', name: 'Lomo Apanado con Puré', price: 35 },
+    { cat: 'criollos', name: 'Saltado de Pollo', price: 28 },
+    { cat: 'criollos', name: 'Saltado de Carne', price: 28 },
+    { cat: 'criollos', name: 'Tallarines Verdes con Chuleta (Carne/Cerdo) + Ensalada', price: 25 },
+    { cat: 'criollos', name: 'Tallarines Verdes con Lomo Saltado', price: 38 },
+    { cat: 'criollos', name: 'Tallarines Verdes con Milanesa de Pollo', price: 20 },
+    { cat: 'criollos', name: 'Tallarines Verdes con Carne Apanada', price: 25 },
+
+    // PIQUEOS REGIONALES
+    { cat: 'piqueos', name: 'Seco de Chabelo', price: 25 },
+    { cat: 'piqueos', name: 'Seco de Chabelo con Costillas de Chancho', price: 45 },
+    { cat: 'piqueos', name: 'Chabelo + Majadito + Costillas de Chancho', price: 65 },
+    { cat: 'piqueos', name: 'Carne Seca', price: 42 },
+    { cat: 'piqueos', name: 'Pescado Cabrilla a la Parrilla', price: 60 },
+
+    // ESPECIALES DOMINGO
+    { cat: 'domingos', name: 'Arroz con Pato', price: 25 },
+    { cat: 'domingos', name: 'Cabrito con Tamal', price: 22 },
+    { cat: 'domingos', name: 'Cabrito sin Tamal', price: 20 },
+    { cat: 'domingos', name: 'Tamalitos (unidad)', price: 3 },
+
+    // ESPECIALES NOCHE
     { cat: 'noches', name: 'Pollo al Barril (1/4)', price: 16 },
     { cat: 'noches', name: 'Pollo al Barril (1/2)', price: 30 },
+    { cat: 'noches', name: 'Pollo al Barril (1 entero)', price: 60 },
+    { cat: 'noches', name: 'Chancho con Pollo', price: 25 },
+    { cat: 'noches', name: 'Chancho', price: 35 },
+    { cat: 'noches', name: 'Alitas a la BBQ', price: 20 },
+    { cat: 'noches', name: 'Alitas Acevichadas', price: 20 },
     { cat: 'noches', name: 'Mostrito', price: 16 },
-    { cat: 'bebidas', name: 'Jarra de Chicha Morada', price: 15 },
-    { cat: 'bebidas', name: 'Jarra de Limonada Frozen', price: 15 },
-    { cat: 'bebidas', name: 'Cerveza Cusqueña', price: 10 }
+    { cat: 'noches', name: 'Parrilla Chancho - Lomo', price: 90 },
+    { cat: 'noches', name: 'Pechuga de Pollo - Lomo Fino', price: 155 },
+
+    // GUARNICIONES
+    { cat: 'guarniciones', name: '1 Porción de Arroz', price: 5 },
+    { cat: 'guarniciones', name: 'Patacones', price: 10 },
+    { cat: 'guarniciones', name: 'Camote o Yuca', price: 5 },
+    { cat: 'guarniciones', name: 'Chifles', price: 5 },
+    { cat: 'guarniciones', name: 'Papas Fritas', price: 10 },
+    { cat: 'guarniciones', name: 'Ensalada Fresca', price: 5 },
+
+    // BEBIDAS Y BEBIDAS ALCOHÓLICAS
+    { cat: 'bebidas', name: 'Limonada Frozen (Jarra)', price: 15 },
+    { cat: 'bebidas', name: 'Maracuyá (Jarra)', price: 15 },
+    { cat: 'bebidas', name: 'Chicha Morada (Jarra)', price: 15 },
+    { cat: 'bebidas', name: 'Clarito (Jarra)', price: 15 },
+    { cat: 'bebidas', name: 'Cerveza Cristal', price: 9 },
+    { cat: 'bebidas', name: 'Cerveza Pilsen', price: 9 },
+    { cat: 'bebidas', name: 'Cerveza Cusqueña Trigo', price: 10 },
+    { cat: 'bebidas', name: 'Cerveza Cusqueña Negra', price: 10 },
+    { cat: 'bebidas', name: 'Cerveza Heineken', price: 10 },
+    { cat: 'bebidas', name: 'Cerveza Corona', price: 10 },
+    { cat: 'bebidas', name: 'Cerveza Stella', price: 10 },
+    { cat: 'bebidas', name: 'Tragos (Piña Colada, Mojito, Machu Picchu, Pisco Sour)', price: 20 }
 ];
 
 let cart = {};
@@ -147,7 +267,7 @@ function renderMenu(items) {
                 <div class="card-name">${item.name}</div>
                 <div class="card-price">S/ ${item.price.toFixed(2)}</div>
             </div>
-            <button class="add-btn" onclick="addToCart('${item.name}', ${item.price})"><i class="fas fa-plus"></i></button>
+            <button class="add-btn" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.price})"><i class="fas fa-plus"></i></button>
         </div>
     `).join('');
 }
